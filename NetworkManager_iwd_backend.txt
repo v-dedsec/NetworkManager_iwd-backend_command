@@ -1,0 +1,23 @@
+sudo pacman -S networkmanger iwd
+
+sudo systemctl enable --now networkmanger
+sudo systemctl disable --now systemd-networkd
+sudo systemctl disable --now systemd-resolved
+
+sudo mkdir -p /etc/NetworkManager/conf.d
+
+sudo nano /etc/NetworkManager/conf.d/wifi_backend.conf
+
+[device]
+wifi_backend=iwd
+
+sudo nano /etc/iwd/main.conf
+
+[General]
+EnableNetworkConfiguration=false
+
+sudo ln -sf /run/NetworkManager/resolv.conf /etc/resolv.conf
+ls -l /etc/resolv.conf
+
+sudo systemctl restart iwd
+sudo systemctl restart NetworkManager
